@@ -27,20 +27,40 @@ from sprites import *
 pg.init ()
 
 game_screen = pg.display.set_mode((WIDTH, HEIGHT))
-pg.display.set_caption("Sanke Type Game")
+pg.display.set_caption("Snake Type Game")
 
-def drawsnake():
-    pg.draw.rect(game_screen, (255, 255, 255), [10, 10])
+x, y = 200, 200
+delta_x, delta_y = 0, 0
 
-def update():
-    drawsnake()
-
+def snake():
+    global x, y
+    x = (x + delta_x) % WIDTH
+    y = (y + delta_y) % HEIGHT
+    game_screen.fill((0,0,0))
+    pg.draw.rect(game_screen, (255, 255, 255), [x, y, 10, 10])
+    pg.display.update()
 while True:
     events = pg.event.get()
     for event in events:
         if(event.type == pg.QUIT):
             pg.quit()
             quit()
-
-
+        if(event.type == pg.KEYDOWN):
+            if(event.key == pg.K_LEFT):
+                delta_x = -10
+                delta_y = 0
+            elif(event.key == pg.K_RIGHT):
+                delta_x = 10
+                delta_y = 0
+            elif(event.key == pg.K_UP):
+                delta_x = 0
+                delta_y = -10
+            elif(event.key == pg.K_DOWN):
+                delta_x = 0
+                delta_y = 10
+            else:
+                continue
+            snake()
+    if(not events):
+        snake()
 
